@@ -1,0 +1,64 @@
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+
+
+# Install Tools
+RUN apt update
+RUN DEBIAN_FRONTEND=noninteractive apt install -y ssh vim git iputils-ping net-tools tar unzip
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN echo "root:123456" | chpasswd
+
+
+# Install Python
+RUN DEBIAN_FRONTEND=noninteractive apt install -y gcc make build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev tar
+# 下载Python源码
+WORKDIR /opt
+RUN wget -c https://www.python.org/ftp/python/3.9.12/Python-3.9.12.tgz
+# 解压
+RUN tar -xzvf /opt/Python-3.9.12.tgz -C /opt
+# 编译
+WORKDIR /opt/Python-3.9.12
+RUN ./configure --enable-optimizations --prefix=/usr/local/python3
+RUN make -j16 &&  make install
+RUN ln -s /usr/local/python3/bin/python3.9 /usr/bin/python
+RUN ln -s /usr/local/python3/bin/pip3.9 /usr/bin/pip
+RUN rm /usr/bin/python3
+RUN ln -s /usr/local/python3/bin/python3.9 /usr/bin/python3
+RUN rm -rf /opt/Python-3.9.12*
+RUN apt autoremove -y
+# 设置Python环境变量
+ENV PATH="/usr/local/bin:${PATH}"
+
+
+# Install DeepLearning libraries
+RUN pip3 install torch==2.1.2 torchvision==0.16.1 torchaudio==2.1.1 --index-url https://download.pytorch.org/whl/cu118
+RUN pip install onnx==1.12.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install onnxruntime==1.12.1 -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install onnxsim==0.4.28 -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install cuda-python==11.8 -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install onnxsim==0.4.28 -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install psutil yapf==0.32.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# Install tensorrt
+WORKDIR /opt
+COPY ./TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz /opt
+RUN tar -xvf TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz
+RUN mv TensorRT-8.6.1.6/ /usr/local/
+RUN rm TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz
+RUN pip install /usr/local/TensorRT-8.6.1.6/python/tensorrt-8.6.1-cp39-none-linux_x86_64.whl
+# 设置环境变量
+ENV LD_LIBRARY_PATH="/usr/local/TensorRT-8.6.1.6/lib:${LD_LIBRARY_PATH}"
+
+
+
+# WorkDir
+WORKDIR /root
+
+
+# 启动命令
+RUN mkdir /var/run/sshd
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+
+
