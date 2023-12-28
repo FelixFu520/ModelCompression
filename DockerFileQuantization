@@ -7,6 +7,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y ssh vim git iputils-ping net-t
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN echo "root:123456" | chpasswd
 
+# Install Opencv
+RUN apt-get install libopencv-dev libopencv-contrib-dev cmake
 
 # Install Python
 RUN DEBIAN_FRONTEND=noninteractive apt install -y gcc make build-essential libssl-dev zlib1g-dev \
@@ -39,6 +41,8 @@ RUN pip install onnxsim==0.4.28 -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install cuda-python==11.8 -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install onnxsim==0.4.28 -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install psutil yapf==0.32.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install tqdm -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Install tensorrt
 WORKDIR /opt
