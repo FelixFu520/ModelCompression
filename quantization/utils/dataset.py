@@ -39,5 +39,6 @@ class segDataset(Dataset):
         img = cv2.imread(imgPath,0)
         img = np.expand_dims(img, axis=0).astype(np.float32)
         label = cv2.imread(labelPath, 0)
+        label = np.where(label!=0, 1, 0)
         label = label.astype(np.int64)
         return img,label
