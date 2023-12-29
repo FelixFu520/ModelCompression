@@ -88,13 +88,29 @@ double calculate_variance(const std::vector<double>& v) {
 }
 
 int main(int argc, char** argv){
-    string engine_path = "/root/data/fufa/modelcompression/quantization/checkpoints/wafer-train-fp16.trt";
-//    string image_src = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14.bmp";
-//    string image_dst_label = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14-trt_fp16-label.png";
-//    string image_dst_conf = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14-trt_fp16-conf.png";
-    string image_src = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21.bmp";
-    string image_dst_label = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21-trt_fp16-label.png";
-    string image_dst_conf = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21-trt_fp16-conf.png";
+    string engine_path, image_src, image_dst_label, image_dst_conf;
+    int TYPE = 4; // 1,2->FP16; 3,4->INT8;
+    if(TYPE==1){
+        engine_path = "/root/data/fufa/modelcompression/quantization/checkpoints/wafer-train-fp16.trt";
+        image_src = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14.bmp";
+        image_dst_label = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14-trt_fp16-label.png";
+        image_dst_conf = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14-trt_fp16-conf.png";
+    }else if (TYPE==2){
+        engine_path = "/root/data/fufa/modelcompression/quantization/checkpoints/wafer-train-fp16.trt";
+        image_src = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21.bmp";
+        image_dst_label = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21-trt_fp16-label.png";
+        image_dst_conf = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21-trt_fp16-conf.png";
+    }else if(TYPE==3){
+        engine_path = "/root/data/fufa/modelcompression/quantization/checkpoints/wafer-train-int8.trt";
+        image_src = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14.bmp";
+        image_dst_label = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14-trt_int8-label.png";
+        image_dst_conf = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14-trt_int8-conf.png";
+    }else if(TYPE==4){
+        engine_path = "/root/data/fufa/modelcompression/quantization/checkpoints/wafer-train-int8.trt";
+        image_src = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21.bmp";
+        image_dst_label = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21-trt_int8-label.png";
+        image_dst_conf = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21-trt_int8-conf.png";
+    }
 
     // 读图片
     Mat image = imread(image_src, 0);
