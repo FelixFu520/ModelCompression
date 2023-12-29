@@ -55,4 +55,5 @@ make
 ### 测试结果
 1. TensorRT FP16: 685us
 2. TensorRT INT8: 572us
-3. 
+3. pytorch-quantization+TensorRT INT8(PTQ):
+4. pytorch-quantization+TensorRT INT8(QAT):

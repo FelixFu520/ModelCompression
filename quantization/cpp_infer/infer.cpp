@@ -89,7 +89,7 @@ double calculate_variance(const std::vector<double>& v) {
 
 int main(int argc, char** argv){
     string engine_path, image_src, image_dst_label, image_dst_conf;
-    int TYPE = 6; // 1,2->FP16; 3,4->INT8; 5,6->PTQ;
+    int TYPE = 8 ; // 1,2->FP16; 3,4->INT8; 5,6->PTQ; 7,8->QAT
     if(TYPE==1){
         engine_path = "/root/data/fufa/modelcompression/quantization/checkpoints/wafer-train-fp16.trt";
         image_src = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14.bmp";
@@ -120,6 +120,16 @@ int main(int argc, char** argv){
         image_src = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21.bmp";
         image_dst_label = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21-ptq_int8-label.png";
         image_dst_conf = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21-ptq_int8-conf.png";
+    }else if(TYPE==7){
+        engine_path = "/root/data/fufa/modelcompression/quantization/checkpoints/wafer-qat-calibrated-int8.trt";
+        image_src = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14.bmp";
+        image_dst_label = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14-qat_int8-label.png";
+        image_dst_conf = "/root/data/fufa/modelcompression/quantization/images/0000_Row006_Col036_00137_14-qat_int8-conf.png";
+    }else if(TYPE==8){
+        engine_path = "/root/data/fufa/modelcompression/quantization/checkpoints/wafer-qat-calibrated-int8.trt";
+        image_src = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21.bmp";
+        image_dst_label = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21-qat_int8-label.png";
+        image_dst_conf = "/root/data/fufa/modelcompression/quantization/images/0500_Row023_Col050_00953_21-qat_int8-conf.png";
     }
 
     // 读图片
