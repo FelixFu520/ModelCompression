@@ -29,5 +29,30 @@ NG images:1367
 sudo docker build -t quantization:20231225 . -f DockerFileQuantization
 sudo docker run -p 10023:22 --name fufa_quant -itd -v /data:/root/data --gpus all --privileged --shm-size=64g quantization:20231225
 ```
-### 程序说明
 
+### 程序说明
+```shell
+一、训练和验证
+python train.py
+python train_predict.py # 注意修改下pth的路径
+
+二、对导出onnx, 转成trt, 使用FP16, INT8(TensorRT API 量化)推理
+python train_convert_onnx.py # 模型转换
+然后cmake、make，执行推理, 可能会修改一些C++代码
+cd cpp_build && mkdir build && cd build
+cmake ..
+make
+./onnx2trt
+cd cpp_infer && mkdir build && cd build
+cmake ..
+make
+./infer
+
+三、 使用pytorch-quantization库量化
+
+
+```
+### 测试结果
+1. TensorRT FP16: 685us
+2. TensorRT INT8: 572us
+3. 

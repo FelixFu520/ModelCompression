@@ -34,7 +34,7 @@ ENV PATH="/usr/local/bin:${PATH}"
 
 
 # Install DeepLearning libraries
-RUN pip3 install torch==2.1.2 torchvision==0.16.1 torchaudio==2.1.1 --index-url https://download.pytorch.org/whl/cu118
+RUN pip3 install torch==2.1.2 torchvision==0.16.1 torchaudio==2.1.1 --index-url https://download.pytorch.org/whl/cu118 -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install onnx==1.12.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install onnxruntime==1.12.1 -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install onnxsim==0.4.28 -i https://pypi.tuna.tsinghua.edu.cn/simple
@@ -43,6 +43,9 @@ RUN pip install onnxsim==0.4.28 -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install psutil yapf==0.32.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install tqdm -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# Install Quantization libraries
+RUN pip install pytorch-quantization==2.1.2 --extra-index-url https://pypi.ngc.nvidia.com -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Install tensorrt
 WORKDIR /opt
