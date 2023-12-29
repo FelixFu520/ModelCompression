@@ -49,11 +49,19 @@ make
 ./infer
 
 三、 使用pytorch-quantization库量化
+python ptq.py
+python ptq_predict.py
+python ptq_convert_onnx.py
+转trt, 然后测试
 
+python qat.py
+python qat_predict.py
+python qat_conver_onnx.py
+转trt, 然后测试
 
 ```
 ### 测试结果
 1. TensorRT FP16: 685us
 2. TensorRT INT8: 572us
-3. pytorch-quantization+TensorRT INT8(PTQ):
-4. pytorch-quantization+TensorRT INT8(QAT):
+3. pytorch-quantization+TensorRT INT8(PTQ): 660us
+4. pytorch-quantization+TensorRT INT8(QAT): 669us
